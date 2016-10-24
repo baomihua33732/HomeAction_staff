@@ -1,0 +1,253 @@
+//
+//  DetailViewController.m
+//  HomeAction_staff
+//
+//  Created by 郭同明 on 16/9/20.
+//  Copyright © 2016年 陈宝祥. All rights reserved.
+//
+
+#import "DetailViewController.h"
+#define Start_X 20.0f           // 第一个按钮的X坐标
+#define Start_Y 35.0f           // 第一个按钮的Y坐标
+#define Width_Space 5.0f        // 2个按钮之间的横间距
+#define Height_Space 20.0f      // 竖间距
+
+@interface DetailViewController ()
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UITextField *nameTF;
+@property (strong, nonatomic) IBOutlet UITextField *phoneTF;
+@property (strong, nonatomic) IBOutlet UITextView *detailTextView;
+@property (strong, nonatomic) IBOutlet UIView *typeView;
+@property (strong, nonatomic) IBOutlet UIView *ageView;
+@property (strong, nonatomic) IBOutlet UIView *genderView;
+
+@property (strong, nonatomic) IBOutlet UIButton *maketureBtn;
+@property(nonatomic,strong)UIButton *chooseTypeBtn;       //户型
+@property(nonatomic,strong)UIButton *chooseAgeBtn;       //年龄
+@property(nonatomic,strong)UIButton *chooseGenderBtn;    //性别
+@end
+
+@implementation DetailViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    if (ScreenHeight == 480) {
+        self.scrollView.contentSize = CGSizeMake(0, 568);
+    }
+    self.scrollView.scrollEnabled = YES;
+
+    _detailTextView.layer.masksToBounds = YES;
+    _detailTextView.layer.cornerRadius = 3;
+    _maketureBtn.layer.masksToBounds = YES;
+    _maketureBtn.layer.cornerRadius = 3;
+    [self setChoose];
+}
+
+#pragma mark ---设置选择栏
+-(void)setChoose{
+    //关注类型
+    NSMutableArray *arry = [[NSMutableArray alloc]initWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
+    for (int i = 0 ; i < arry.count; i++) {
+        NSInteger index = i % 5;
+        NSInteger page = i / 5;
+        
+        // 圆角按钮
+        UIButton *aBt = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aBt.layer.borderWidth = 1.0f;
+        aBt.layer.borderColor = [[UIColor grayColor]CGColor];
+        aBt.layer.masksToBounds = YES;
+        aBt.layer.cornerRadius = 3;
+        aBt.frame = CGRectMake(index * (45 + Width_Space) + Start_X, page  * (25 + Height_Space)+Start_Y, 45, 25);
+        //tag标记值
+        aBt.tag = i;
+        //文字
+        [aBt setTitle:arry[i] forState:UIControlStateNormal];
+        
+        //默认第一个选中
+        if (aBt.tag == 0) {
+            
+            aBt.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+            [aBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            //定义第一个按钮sender是已经被选中
+            _chooseTypeBtn = aBt;
+        }
+        else{
+            
+            aBt.backgroundColor = [UIColor whiteColor];
+            [aBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        }
+        
+        [aBt addTarget:self action:@selector(typeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.typeView addSubview:aBt];
+    }
+    //————————————————————————————————————  年龄 ----------------------
+    NSMutableArray *ageArry = [[NSMutableArray alloc]initWithObjects:@"20-30",@"30-40",@"40-50",@"50-60",@"60以上",nil];
+    for (int i = 0 ; i < ageArry.count; i++) {
+        NSInteger index = i % 5;
+        NSInteger page = i / 5;
+        
+        // 圆角按钮
+        UIButton *aBt = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aBt.layer.borderWidth = 1.0f;
+        aBt.layer.borderColor = [[UIColor grayColor]CGColor];
+        aBt.layer.masksToBounds = YES;
+        aBt.layer.cornerRadius = 3;
+        aBt.frame = CGRectMake(index * (55 + Width_Space) + Start_X, page  * (25 + Height_Space)+Start_Y, 55, 25);
+        //tag标记值
+        aBt.tag = i;
+        //文字
+        [aBt setTitle:ageArry[i] forState:UIControlStateNormal];
+        
+        //默认第一个选中
+        if (aBt.tag == 0) {
+            
+            aBt.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+            [aBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            //定义第一个按钮sender是已经被选中
+            _chooseAgeBtn = aBt;
+        }
+        else{
+            
+            aBt.backgroundColor = [UIColor whiteColor];
+            [aBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        }
+        
+        [aBt addTarget:self action:@selector(ageBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ageView addSubview:aBt];
+    }
+    //————————————————————————————————————  性别 ----------------------
+    NSMutableArray *genderArry = [[NSMutableArray alloc]initWithObjects:@"男",@"女",nil];
+    for (int i = 0 ; i < genderArry.count; i++) {
+        NSInteger index = i % 2;
+        NSInteger page = i / 2;
+        
+        // 圆角按钮
+        UIButton *aBt = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aBt.layer.borderWidth = 1.0f;
+        aBt.layer.borderColor = [[UIColor grayColor]CGColor];
+        aBt.layer.masksToBounds = YES;
+        aBt.layer.cornerRadius = 3;
+        aBt.frame = CGRectMake(index * (55 + Width_Space) + Start_X, page  * (25 + Height_Space)+Start_Y, 55, 25);
+        //tag标记值
+        aBt.tag = i;
+        //文字
+        [aBt setTitle:genderArry[i] forState:UIControlStateNormal];
+        
+        //默认第一个选中
+        if (aBt.tag == 0) {
+            
+            aBt.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+            [aBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            //定义第一个按钮sender是已经被选中
+            _chooseGenderBtn = aBt;
+        }
+        else{
+            
+            aBt.backgroundColor = [UIColor whiteColor];
+            [aBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        }
+        
+        [aBt addTarget:self action:@selector(genderBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.genderView addSubview:aBt];
+    }
+
+    
+}
+
+#pragma mark --- 选择的点击事件
+//-----------------------------------  类型-------------------------------
+-(void)typeBtnAction:(UIButton *)sender{
+    
+    NSLog(@"点击时间按钮:%ld",(long)[sender tag]);
+    
+    //点击的和上次是一样的
+    if(_chooseTypeBtn == sender) {
+        
+        //        //不做处理
+        
+        
+    } else{
+        
+        sender.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+        [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        _chooseTypeBtn.backgroundColor = [UIColor whiteColor];
+        [_chooseTypeBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    
+    _chooseTypeBtn = sender;
+    NSLog(@"%@",sender.titleLabel.text);
+    
+}
+//-----------------------------------  年龄-------------------------------
+-(void)ageBtnAction:(UIButton *)sender{
+    
+    NSLog(@"点击时间按钮:%ld",(long)[sender tag]);
+    
+    //点击的和上次是一样的
+    if(_chooseAgeBtn == sender) {
+        
+        //        //不做处理
+        
+        
+    } else{
+        
+        sender.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+        [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        _chooseAgeBtn.backgroundColor = [UIColor whiteColor];
+        [_chooseAgeBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    
+    _chooseAgeBtn = sender;
+    NSLog(@"%@",sender.titleLabel.text);
+    
+}
+//-----------------------------------  性别-------------------------------
+-(void)genderBtnAction:(UIButton *)sender{
+    
+    NSLog(@"点击时间按钮:%ld",(long)[sender tag]);
+    
+    //点击的和上次是一样的
+    if(_chooseGenderBtn == sender) {
+        
+        //        //不做处理
+        
+        
+    } else{
+        
+        sender.backgroundColor = [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0];
+        [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        _chooseGenderBtn.backgroundColor = [UIColor whiteColor];
+        [_chooseGenderBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    
+    _chooseGenderBtn = sender;
+    NSLog(@"%@",sender.titleLabel.text);
+    
+}
+
+- (IBAction)goBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)makeTrueBtnAction:(id)sender {
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

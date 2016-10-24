@@ -1,0 +1,82 @@
+//
+//  ChangeViewController.m
+//  HomeAction_staff
+//
+//  Created by 郭同明 on 16/9/19.
+//  Copyright © 2016年 陈宝祥. All rights reserved.
+//
+
+#import "ChangeViewController.h"
+
+@interface ChangeViewController ()
+@property (strong, nonatomic) IBOutlet JKCountDownButton *sendBtn; //发送验证码按钮
+@property (strong, nonatomic) IBOutlet UIButton *makeSureBtn; //确认按钮
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;  //标题
+@property (strong, nonatomic) IBOutlet UIView *nickNameView;//名字View
+@property (strong, nonatomic) IBOutlet UIView *phoneView;//手机号View
+@property (strong, nonatomic) IBOutlet UIView *passWordView;//密码View
+@property (strong, nonatomic) IBOutlet UITextField *nickNameTF;//姓名
+@property (strong, nonatomic) IBOutlet UITextField *checkTF;//验证码
+
+@property (strong, nonatomic) IBOutlet UITextField *phoneTF;//手机号
+
+@property (strong, nonatomic) IBOutlet UITextField *oldPWTF;//原密码
+
+@property (strong, nonatomic) IBOutlet UITextField *newpwTF;//新密码
+
+@end
+
+@implementation ChangeViewController
+
+-(void)viewWillAppear:(BOOL)animated{
+    if ([self.ViewIdentify isEqualToString:@"修改姓名"]) {
+        _titleLabel.text = @"姓名修改";
+        _phoneView.hidden = YES;
+        _passWordView.hidden = YES;
+    }else if([self.ViewIdentify isEqualToString:@"修改手机号"]){
+          _titleLabel.text = @"联系方式";
+        _nickNameView.hidden = YES;
+        _passWordView.hidden = YES;
+    }else if([self.ViewIdentify isEqualToString:@"修改密码"]){
+          _titleLabel.text = @"修改密码";
+        _nickNameView.hidden = YES;
+        _phoneView.hidden = YES;
+    }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    _sendBtn.layer.masksToBounds = YES;
+    _sendBtn.layer.cornerRadius = 3;
+    _makeSureBtn.layer.masksToBounds = YES;
+    _makeSureBtn.layer.cornerRadius = 3;
+
+}
+#pragma mark --- 返回上一界面
+- (IBAction)goBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark --- 发送验证码
+- (IBAction)sendBtnAction:(id)sender {
+}
+#pragma mark --- 确认
+- (IBAction)makeSureBtnAction:(id)sender {
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

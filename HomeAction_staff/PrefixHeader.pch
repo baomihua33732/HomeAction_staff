@@ -1,0 +1,79 @@
+//
+//  PrefixHeader.pch
+//  HomeAction_staff
+//
+//  Created by 郭同明 on 16/9/13.
+//  Copyright © 2016年 陈宝祥. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#define IsiPad     (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IsiPhone   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IsRetain   ([[UIScreen mainScreen] scale] >= 2.0)
+#define IsiPhone4   (IsiPhone && ScreenMaxLength < 568.0)
+#define IsiPhone5   (IsiPhone && ScreenMaxLength == 568.0)
+#define IsiPhone6   (IsiPhone && ScreenMaxLength == 667.0)
+#define IsiPhone6P  (IsiPhone && ScreenMaxLength == 736.0)
+#define ORIGINAL_MAX_WIDTH 640.0f
+#define ScreenWidth [[UIScreen mainScreen] bounds].size.width              //屏幕宽度
+#define ScreenHeight [[UIScreen mainScreen] bounds].size.height            // 屏幕高度
+#define kBlueColor   [UIColor colorWithRed:6/255.0 green:158/255.0 blue:255/255.0 alpha:1.0]
+//服务器地址
+//#define KURL       @"http://www.zhijiaxd.com/Dowin-app-ApiGateway/app/"   //线上服务器
+//#define KURL     @"http://172.16.20.218:8082/Dowin-markingplatform-Web/developstaffapp/"     
+#define KURL       @"http://172.16.10.15:8085/Dowin-markingplatform-Web/developstaffapp/"     //本地服务器
+#define kWebUrl    @"http://172.16.10.15:8085/"                                               //二级菜单weburl
+//#define KURL       @"http://172.16.20.218:8082/Dowin-markingplatform-Web/developstaffapp/"     //小胖服务器
+
+
+/**
+ *  常用字段管理
+ */
+#define kVersionNum       @"iosPhoneVersion_Markingplatform"           //获取服务器版本号
+#define kVersionUrl       @"iosPhoneVersionURL_Markingplatform"        //获取服务器版升级地址
+#define kVersionDesc      @"iosPhoneVersionDesc_Markingplatform"        //获取服务器版升级地址
+#define kStanderUserDefaults   [NSUserDefaults standardUserDefaults]
+#define kShareManager           [Manage shareManager]
+
+
+/**
+ *  接口标识
+ */
+
+#define kLoginIn                               @"DevelopStaffLoginIn"                 //登录
+#define kExitLogin                             @"DevelopStaffLogout.auth"             //退出登录
+#define kQueryReportCatalog                    @"QueryReportCatalog"                  //获取菜单报表
+#define kAppVersionCheck                       @"AppVersionCheck"                     //检查版本更新
+#define kHouseProjectQr                        @"HouseProjectQr"                      //获取二维码
+#define kUpdateInfoDeveloperStaff              @"UpdateInfoDeveloperStaff"            //修改个人信息
+#define kUpdateInfoDeveloperStaffPassword      @"UpdateInfoDeveloperStaffPassword"    //修改密码
+#define kUpdateUnderlingDevelopStaffService    @"UpdateUnderlingDevelopStaffService"  //修改下属资料
+#define kUpdateDevelopStaffPasswordService     @"UpdateUnderlingDevelopStaffPasswordService"//修改下属密码
+#define kValidRegisterCode                     @"ValidRegisterCode"                   //验证注册码
+#define kHouseTypeList                         @"HouseTypeList"                       //户型列表
+#define kCustomerDataEntry                     @"CustomerDataEntry"                   //客户信息录入
+#define kCreateInfoDeveloperStaff              @"CreateInfoDeveloperStaff"            //创建开发商账户
+#define kCustomerDataQuery                     @"CustomerDataQuery"                   //客户查询
+/**
+ *  三方AppKey
+ */
+#define kJPushKey         @"a71c2c314c9c42919f31b348"                          //极光推送key
+
+
+/**
+ *  头文件
+ */
+#import "JKCountDownButton.h"                                      //验证码倒计时
+#import "UIImage+Helper.h"                                         //二维码生成
+#import "JPUSHService.h"                                           //极光推送
+#import "TreeModel.h"                                              //嵌套cell
+#import "AFNetworking.h"
+#import "NSString+MD5.h"                                          //MD5加密
+#import "Manage.h"                                                //单例
+#import "ClassModel.h"                                            //model
+#import "MJRefresh.h"                                              //上拉加载下拉刷新
+#endif /* PrefixHeader_pch */

@@ -7,8 +7,15 @@
 //
 
 #import "AppDelegate.h"
-
-@interface AppDelegate ()
+#import "RegistViewController.h"
+#import "DetailViewController.h"
+#import "LoginViewController.h"
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+@interface AppDelegate ()<JPUSHRegisterDelegate>
+@property(nonatomic,strong)NSString *pushMessage; //接收到的推送内容
+@property(nonatomic,strong)UINavigationController *NavigationVC;
 
 @end
 
@@ -17,7 +24,92 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    return YES;
+    [self makeWindows];
+   
+    //Required
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+        [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    }
+    else if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
+    }
+    else {
+        //categories 必须为nil
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert)
+                                              categories:nil];
+    }
+    
+    //Required
+    // init Push(2.1.5版本的SDK新增的注册方法，改成可上报IDFA，如果没有使用IDFA直接传nil  )
+    // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
+    [JPUSHService setupWithOption:launchOptions appKey:kJPushKey
+                          channel:@"0"
+                 apsForProduction:YES
+            advertisingIdentifier:nil];
+  
+    [self installUncaughtExceptionHandler];//获取crash日志
+
+       return YES;
+}
+
+#pragma mark --- 布局windows
+-(void)makeWindows{
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstOpen"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstOpen"];
+          RegistViewController *registVC = [[RegistViewController alloc]init];
+        _NavigationVC =  [[UINavigationController alloc]initWithRootViewController:registVC];
+    }else{
+         LoginViewController *registVC = [[LoginViewController alloc]init];
+       _NavigationVC  = [[UINavigationController alloc]initWithRootViewController:registVC];
+    }
+    self.window.rootViewController = _NavigationVC;
+    [self.window makeKeyAndVisible];
+}
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    /// Required - 注册 DeviceToken
+    [JPUSHService registerDeviceToken:deviceToken];
+
+    
+}
+
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    // Required, iOS 7 Support
+    [JPUSHService handleRemoteNotification:userInfo];
+//    completionHandler(UIBackgroundFetchResultNewData);
+//    UIAlertView * alert  = [[UIAlertView alloc] initWithTitle:@"推送消息"
+//                                                      message:@"您有一条新消息!"
+//                                                     delegate:nil
+//                                            cancelButtonTitle:@"取消"
+//                                            otherButtonTitles:@"去查看",nil];
+//    [alert show];
+    [JPUSHService resetBadge];
+    NSDictionary *aps = [userInfo valueForKey:@"aps"];
+    application.applicationIconBadgeNumber = 0;
+    DetailViewController * VC = [[DetailViewController alloc]init];
+    VC.ViewIdentify = @"添加足迹";
+    VC.staffID = [aps valueForKey:@"alert"];
+    [self.window.rootViewController presentViewController:VC animated:YES completion:nil];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    // Required,For systems with less than or equal to iOS6
+  
+     //        NSLog(@"收到通知6:%@", [self logDic:userInfo]);
+  
+      [JPUSHService handleRemoteNotification:userInfo];
+   
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -28,18 +120,36 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+      [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [application setApplicationIconBadgeNumber:0];
+    [application cancelAllLocalNotifications];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+   
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark --- 获取crash日志
+-(void)installUncaughtExceptionHandler{
+    NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
+}
+
+void UncaughtExceptionHandler(NSException* exception){
+    NSArray *arr = [exception  callStackSymbols];
+    NSString *reason = [exception reason];
+    NSString *name = [exception name];
+    NSString *currentVersion = [[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSLog(@"获取crash日志 %@-----%@---%@----%@",arr,reason,name,currentVersion);
+}
+
 
 @end

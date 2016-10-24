@@ -1,0 +1,72 @@
+//
+//  HomeViewController.m
+//  HomeAction_staff
+//
+//  Created by 郭同明 on 16/9/13.
+//  Copyright © 2016年 陈宝祥. All rights reserved.
+//
+
+#import "HomeViewController.h"
+#import "MyClientViewController.h"  //我的客户
+#import "PersonViewController.h"   //个人中心
+@interface HomeViewController ()
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIImageView *twoCodeImageView; //二维码
+@property (strong, nonatomic) NSString * twoCodeStr;   //二维码字符串
+@end
+
+@implementation HomeViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setOther];
+}
+#pragma mark --- 设置其他
+-(void)setOther{
+    self.navigationController.navigationBar.translucent = NO;
+    // Do any additional setup after loading the view from its nib.
+    if (ScreenHeight == 480) {
+        self.scrollView.contentSize = CGSizeMake(0, 665);
+    }
+    self.scrollView.scrollEnabled = YES;
+
+    
+    _twoCodeStr = @"abCD-efG_123Hig_-42123";
+    CGSize QRSize = CGSizeMake(150.0f, 150.0f);
+    _twoCodeImageView.image=[UIImage generateQRCode:_twoCodeStr size:QRSize ];
+    
+    CGSize LogoSize = CGSizeMake(40.0f, 40.0f);
+    _twoCodeImageView.image= [_twoCodeImageView.image  mergeImage:[UIImage imageNamed:@"xiaojingshihead"] size:LogoSize];
+
+}
+
+
+
+#pragma mark --- 我的服务
+- (IBAction)MyClientBtnAction:(id)sender {
+    MyClientViewController *clientTVC = [MyClientViewController new];
+    [self.navigationController pushViewController:clientTVC animated:YES];
+}
+
+#pragma mark --- 个人中心
+- (IBAction)PersonalBtnAction:(id)sender {
+    PersonViewController *personalVC = [PersonViewController new];
+    [self.navigationController pushViewController:personalVC animated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

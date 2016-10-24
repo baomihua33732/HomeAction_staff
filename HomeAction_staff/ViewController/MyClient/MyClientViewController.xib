@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyClientViewController">
+            <connections>
+                <outlet property="gobackBtn" destination="hZ5-y2-i04" id="4vV-8k-6IN"/>
+                <outlet property="imageView" destination="naF-FD-JaR" id="jiy-uL-sAX"/>
+                <outlet property="leftView" destination="yuI-K9-VXD" id="p8u-Ha-EFg"/>
+                <outlet property="showBtn" destination="A0A-71-W9Y" id="1rY-OS-eNA"/>
+                <outlet property="showLeftBtn" destination="zP8-aS-IZ5" id="QuT-0B-Fl6"/>
+                <outlet property="tableView" destination="g6M-jZ-LHu" id="Vm5-jJ-bcY"/>
+                <outlet property="titleView" destination="hwo-JE-w6I" id="waZ-EK-jVY"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webView" destination="7WV-no-fRr" id="GY3-tp-T9b"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hwo-JE-w6I">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZ5-y2-i04">
+                            <rect key="frame" x="0.0" y="26" width="46" height="38"/>
+                            <state key="normal" image="nav_back_icon"/>
+                            <connections>
+                                <action selector="goBack:" destination="-1" eventType="touchUpInside" id="CMY-Pg-mw4"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="我的服务" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ySB-hZ-rCz">
+                            <rect key="frame" x="91" y="32" width="138" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7WV-no-fRr">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="pMb-jl-3e9"/>
+                    </constraints>
+                </webView>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yuI-K9-VXD" userLabel="leftView">
+                    <rect key="frame" x="0.0" y="72" width="250" height="496"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ofa-on-JmQ">
+                            <rect key="frame" x="0.0" y="0.0" width="230" height="496"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="naF-FD-JaR">
+                                    <rect key="frame" x="0.0" y="0.0" width="230" height="496"/>
+                                </imageView>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="g6M-jZ-LHu">
+                                    <rect key="frame" x="0.0" y="0.0" width="230" height="496"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0A-71-W9Y">
+                            <rect key="frame" x="228" y="201" width="28" height="59"/>
+                            <state key="normal" image="closeTableView"/>
+                            <connections>
+                                <action selector="showOrCloseBtnAction:" destination="-1" eventType="touchUpInside" id="e2I-VU-UOy"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zP8-aS-IZ5">
+                    <rect key="frame" x="0.0" y="269" width="36" height="59"/>
+                    <state key="normal" image="showTableView"/>
+                    <connections>
+                        <action selector="showLeftViewBtnAction:" destination="-1" eventType="touchUpInside" id="W4K-cm-VcM"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="7WV-no-fRr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="PHT-vw-6UW"/>
+                <constraint firstItem="7WV-no-fRr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tTh-37-1Jk"/>
+                <constraint firstAttribute="trailing" secondItem="7WV-no-fRr" secondAttribute="trailing" id="vid-Jp-Hyu"/>
+                <constraint firstAttribute="bottom" secondItem="7WV-no-fRr" secondAttribute="bottom" id="zZ3-8X-a7J"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="202" y="303"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="closeTableView" width="17" height="59"/>
+        <image name="nav_back_icon" width="10" height="19"/>
+        <image name="showTableView" width="17" height="59"/>
+    </resources>
+</document>

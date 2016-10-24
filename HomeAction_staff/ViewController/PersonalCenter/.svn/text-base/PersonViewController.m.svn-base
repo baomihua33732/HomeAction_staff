@@ -1,0 +1,70 @@
+//
+//  PersonViewController.m
+//  HomeAction_staff
+//
+//  Created by 郭同明 on 16/9/13.
+//  Copyright © 2016年 陈宝祥. All rights reserved.
+//
+
+#import "PersonViewController.h"
+#import "ChangeViewController.h"
+@interface PersonViewController ()
+
+@property (strong, nonatomic) IBOutlet UILabel *nickNameLabel; //姓名
+@property (strong, nonatomic) IBOutlet UILabel *phoneLabel;//联系方式
+@property (strong, nonatomic) IBOutlet UILabel *passWordLabel;//密码
+@property (strong, nonatomic) IBOutlet UILabel *projectNameLabel;//项目名称
+@property (strong, nonatomic) IBOutlet UILabel *projectCompanyLabel;//公司名称
+@property (strong, nonatomic) IBOutlet UIButton *exitBtn; //退出按钮
+@end
+
+@implementation PersonViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    _exitBtn.layer.masksToBounds = YES;
+    _exitBtn.layer.cornerRadius = 3;
+}
+- (IBAction)goBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark --- 修改姓名
+- (IBAction)NameBtnAction:(id)sender {
+    ChangeViewController *changeVC = [ChangeViewController new];
+    changeVC.ViewIdentify = @"修改姓名";
+    [self.navigationController pushViewController:changeVC animated:YES];
+    
+}
+#pragma mark --- 修改手机号
+- (IBAction)phoneBtnAction:(id)sender {
+    ChangeViewController *changeVC = [ChangeViewController new];
+    changeVC.ViewIdentify = @"修改手机号";
+    [self.navigationController pushViewController:changeVC animated:YES];
+}
+#pragma mark --- 修改密码
+- (IBAction)passwordBtnAction:(id)sender {
+    ChangeViewController *changeVC = [ChangeViewController new];
+    changeVC.ViewIdentify = @"修改密码";
+    [self.navigationController pushViewController:changeVC animated:YES];
+}
+#pragma mark --- 退出登录
+- (IBAction)exitBtnAction:(id)sender {
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end
